@@ -58,4 +58,5 @@ let cargarDatos = () => {
 
 window.addEventListener("DOMContentLoaded", (event) => {
   cargarDatos();
+  alert("...DOM Cargado");
 });
