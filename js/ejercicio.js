@@ -30,19 +30,20 @@ let cargarDatos = () => {
                 ) {
                   for (const frase of data.frases) {
                     if (frase.id_autor == ev.target.value) {
-                      let fraseHTML = `<div class="col-lg-3">
-              <div class="test-inner">
-                  <div class="test-author-thumb d-flex">
-                      <div class="test-author-info">
-                          <h4>${
-                            escritor.querySelector("nombre").textContent
-                          }</h4>                                            
-                      </div>
-                  </div>
-                  <span>${frase.texto}</span>
-                  <i class="fa fa-quote-right"></i>
-                </div>
-              </div>`;
+                      let fraseHTML = `
+                        <div class="col-lg-3">
+                          <div class="test-inner">
+                            <div class="test-author-thumb d-flex">
+                              <div class="test-author-info">
+                                <h4>${
+                                  escritor.querySelector("nombre").textContent
+                                }</h4>                                            
+                              </div>
+                            </div>
+                            <span>${frase.texto}</span>
+                            <i class="fa fa-quote-right"></i>
+                          </div>
+                        </div>`;
 
                       document.querySelector("#frases").innerHTML += fraseHTML;
                     }
