@@ -16,44 +16,50 @@ let cargarDatos = () => {
         document.querySelector("select").innerHTML += plantilla;
       }
 
-      document
-        .querySelector("select")
-        .addEventListener("change", (ev) => {
-          document.querySelector("#frases").innerHTML = "";
+      document.querySelector("select").addEventListener("change", (ev) => {
+        document.querySelector("#frases").innerHTML = "";
+      });
 
-          fetch("https://dataserverdaw.herokuapp.com/escritores/frases")
-            .then((response) => response.json())
-            .then((data) => {
-              for (const escritor of escritores) {
-                if (
-                  ev.target.value == escritor.querySelector("id").textContent
-                ) {
-                  for (const frase of data.frases) {
-                    if (frase.id_autor == ev.target.value) {
-                      let fraseHTML = `
-                        <div class="col-lg-3">
-                          <div class="test-inner">
-                            <div class="test-author-thumb d-flex">
-                              <div class="test-author-info">
-                                <h4>${
-                                  escritor.querySelector("nombre").textContent
-                                }</h4>                                            
-                              </div>
-                            </div>
-                            <span>${frase.texto}</span>
-                            <i class="fa fa-quote-right"></i>
-                          </div>
-                        </div>`;
-
-                      document.querySelector("#frases").innerHTML += fraseHTML;
-                    }
-                  }
-                }
-              }
-            });
-        })
-        .catch(console.error);
+      cargarFrases(escritores);
     });
+};
+
+let cargarFrases = (escritores) => {
+  document.querySelector("select").addEventListener("change", (ev) => {
+    // Para borrar las frases anteriores cada que se selecciona un nuevo autor
+    document.querySelector("#frases").innerHTML = "";
+    fetch("https://dataserverdaw.herokuapp.com/escritores/frases")
+      .then((response) => response.json())
+      .then((data) => {
+        Array.from(escritores)
+          .filter(
+            (escritor) =>
+              ev.target.value == escritor.querySelector("id").textContent
+          )
+          .forEach((escritor) => {
+            data.frases
+              .filter((frase) => frase.id_autor == ev.target.value)
+              .forEach((frase) => {
+                const fraseHTML = `
+                    <div class="col-lg-3">
+                      <div class="test-inner">
+                        <div class="test-author-thumb d-flex">
+                          <div class="test-author-info">
+                          <h4>${
+                            escritor.querySelector("nombre").textContent
+                          }</h4>
+                          </div>
+                        </div>
+                        <span>${frase.texto}</span>
+                        <i class="fa fa-quote-right"></i>
+                      </div>
+                    </div>`;
+
+                document.querySelector("#frases").innerHTML += fraseHTML;
+              });
+          });
+      });
+  });
 };
 
 window.addEventListener("DOMContentLoaded", (event) => {
